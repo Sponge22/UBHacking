@@ -5,7 +5,6 @@ import Dashboard from './component/Dashboard.js';
 import Profile from './component/Profile.js';
 import FriendList from './component/FriendList.js';
 import Split from './component/Split.js';
-import Calculate from './component/SplitComponent/Calculate.js';
 import './css/App.css'
 
 
@@ -21,7 +20,7 @@ function App() {
           <Route path="/friends" exact element={<FriendList />} />
           <Route path="/profile" exact element={<Profile />} />
           <Route path="/split" exact element={<Split />} />
-          <Route path="/calculate" exact element={<Calculate />} />
+          
         </Routes>
       </div>
     </Router>
