@@ -29,7 +29,6 @@ export default class Split extends Component {
         requestSectionHelp[i].username = e.target.value;
         this.setState({
             requestSection: requestSectionHelp});
-        console.log(this.state)
     }
 
     handleChangeItemPrice(setionIndex, itemIndex, e) {
@@ -38,7 +37,6 @@ export default class Split extends Component {
         this.setState({
             requestSection: requestSectionHelp
         });
-        console.log(requestSectionHelp[setionIndex].itemPrice[itemIndex])
     }
 
     addItem(setionIndex){
@@ -84,13 +82,13 @@ export default class Split extends Component {
                 <form onSubmit={this.handleSubmit}>
                     {/* loop through requestSection */}
                     {this.state.requestSection.map((element, index) => (
-                        <div className='one-user-request' key={index}>
+                        <div className='one-user-request' key={(index).toString()}>
 
                             {/* username */}
-                            <label>Username: </label>
+                            <label key={(index+1).toString()}>Username: </label>
                             <select 
                                 required
-                                key={index}
+                                key={(index+2).toString()}
                                 value={element.username}
                                 onChange={e => this.handleChangeUsername(index, e)}
                                 >
@@ -109,29 +107,31 @@ export default class Split extends Component {
                             {/* item price input list */}
                             {/* loop through the item price to insert add more items */}
                             {element.itemPrice.map( (item, i) =>
-                                <div class="item-list">
-                                    <label>Item Price: </label>
+                                <div className="item-list">
+                                    <label key={(index+5+i).toString()}>Item Price: </label>
                                     <input
-                                    type='number'
-                                    min='0'
-                                    value={item || 0}
-                                    onChange={e => this.handleChangeItemPrice(index, i, e)} />
+                                        required
+                                        key={(index+6+i).toString()}
+                                        type='number'
+                                        min='0'
+                                        value={item || 0}
+                                        onChange={e => this.handleChangeItemPrice(index, i, e)} />
                                 </div>
                             )}
                             
                             {/* press a add item button for adding more item input for the request section */}
-                            <button className="button" type="button" onClick={() => this.addItem(index)}>Add Item</button>
+                            <button key={(index+3).toString()} className="button" type="button" onClick={() => this.addItem(index) }>Add Item</button>
                             
                             {/* press a remove button for each requestsection after the first one */}
                             {
                                 index ?
                                     <button 
+                                        key={(index+4).toString()}
                                         type="button"  
                                         className="button" 
                                         onClick={() => this.removeRequestSection(index)}>Remove</button>
                                         : null
                             }
-                            <br />
                             <br />
                         </div>
                     ))}
