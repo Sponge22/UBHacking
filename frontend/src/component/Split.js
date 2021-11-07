@@ -13,10 +13,10 @@ export default class Split extends Component {
     }
 
     componentDidMount(){
-        console.log('check')
         this.setState({
             users:['test1','test2']}); 
-             {/* get the all the friend name of the user */}
+
+        // get the all the friend name of the user 
         //fetchPosts().then(response => {                       // send get request from the server
             //this.setState({
                 //posts: response.posts
@@ -26,15 +26,24 @@ export default class Split extends Component {
 
     handleChangeUsername(i, e) {
         let requestSectionHelp = this.state.requestSection;
-        requestSectionHelp[i]['username'] = e.target.value;
+        requestSectionHelp[i].username = e.target.value;
         this.setState({
             requestSection: requestSectionHelp});
         console.log(this.state)
     }
 
-    handleChangeItemPrice(i, e) {
+    handleChangeItemPrice(setionIndex, itemIndex, e) {
         let requestSectionHelp = this.state.requestSection;
-        requestSectionHelp[i]['itemPrice'] = e.target.value;
+        requestSectionHelp[setionIndex].itemPrice[itemIndex] = e.target.value;
+        this.setState({
+            requestSection: requestSectionHelp
+        });
+        console.log(requestSectionHelp[setionIndex].itemPrice[itemIndex])
+    }
+
+    addItem(setionIndex){
+        let requestSectionHelp = this.state.requestSection;
+        requestSectionHelp[setionIndex].itemPrice = [...this.state.requestSection[setionIndex].itemPrice, 0]
         this.setState({
             requestSection: requestSectionHelp
         });
@@ -50,7 +59,7 @@ export default class Split extends Component {
 
     addRequestSection(event){
         this.setState({
-            requestSection: [...this.state.requestSection, { username: "", itemPrice :  0}]
+            requestSection: [...this.state.requestSection, { username: "", itemPrice :  [0]}]
           })
     }
 
@@ -68,14 +77,17 @@ export default class Split extends Component {
     render() {
         return (
             <div>
-                <h3>fill out the form</h3>
+                <h3>Please Fill out the form.
+                    <br/>Use Add-Item button when you have more items request from the user
+                    <br />Use Add-Friend button when you have more friend you want to request split from.
+                </h3>
                 <form onSubmit={this.handleSubmit}>
                     {/* loop through requestSection */}
                     {this.state.requestSection.map((element, index) => (
                         <div className='one-user-request' key={index}>
 
                             {/* username */}
-                            <label>Username:</label>
+                            <label>Username: </label>
                             <select 
                                 required
                                 key={index}
@@ -95,34 +107,39 @@ export default class Split extends Component {
                             </select>
 
                             {/* item price input list */}
-                            
-                            <label>Item Price</label>
-                                <input
+                            {/* loop through the item price to insert add more items */}
+                            {element.itemPrice.map( (item, i) =>
+                                <div class="item-list">
+                                    <label>Item Price: </label>
+                                    <input
                                     type='number'
                                     min='0'
-                                    value={element.itemPrice || 0}
-                                    onChange={e => this.handleChangeItemPrice(index,e)} />
-
+                                    value={item || 0}
+                                    onChange={e => this.handleChangeItemPrice(index, i, e)} />
+                                </div>
+                            )}
                             
                             {/* press a add item button for adding more item input for the request section */}
-                            <button className="button_add_price" type="button" onClick={() => this.addItem()}>Add Item</button>
+                            <button className="button" type="button" onClick={() => this.addItem(index)}>Add Item</button>
                             
                             {/* press a remove button for each requestsection after the first one */}
                             {
                                 index ?
                                     <button 
                                         type="button"  
-                                        className="button_request_section" 
+                                        className="button" 
                                         onClick={() => this.removeRequestSection(index)}>Remove</button>
                                         : null
                             }
-                            </div>
+                            <br />
+                            <br />
+                        </div>
                     ))}
 
-
+                    <br />
                     <div className="button-section">
-                        <button className="button_add_user" type="button" onClick={() => this.addRequestSection()}>Add Friend</button>
-                        <button className="button_submit" type="submit">Submit</button>
+                        <button className="button" type="button" onClick={() => this.addRequestSection()}>Add Friend</button>
+                        <button className="button" type="submit">Submit</button>
                     </div>
                 </form>
                 
